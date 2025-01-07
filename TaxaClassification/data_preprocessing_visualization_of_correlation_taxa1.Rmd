@@ -1,5 +1,5 @@
 ---
-title: "Theropod Teeth"
+title: "Theropod Teeth- Genus level"
 author: "Carolina Marques"
 date: "`r Sys.Date()`"
 output:
@@ -35,33 +35,14 @@ library(mgcv)
 library(mgcViz)
 ```
 
-This document was compiled on the `r Sys.time()` by `r Sys.getenv("USERNAME")`.
-
-
-# Introduction
-
-The data (Database_Hendrickx_2019_Dentes Poyos.xlsx) was obtained thanks to Elisabete Malafaia (EM), on the 31/07/2024, via external memory to Carolina Marques (CM). 
-
-The data contains the information of several parameters obtained from measurements of theropod teeth and most of them are explained in the following schemes: 
-
-![Fig 1: First scheme with the variabes obtained from the theropods teeth.](variables_teeth_image.png)
-
-![Fig 2: Second scheme with the variabes obtained from the theropods teeth, in real teeth.](variables_teeth_image_real.png)
-
-![Fig 3: Third scheme with the variabes obtained from the theropods teeth, in real teeth.](variables_teeth_image_more.png)
-
-All of the above schemes come from @Hendrickx2015
-
 
 # Reading the data 
 
 
 ```{r, warning=FALSE,message=FALSE}
-#data1 <- read_xlsx("Database_Hendrickx_2019_Dentes Poyos_Informacao idade.xlsx")
-#dd<-data.table(Epoch=data1$Epoch,"Taxa (Genus)"=data1$`Taxa (Genus)`)
-#dd<-dd[!duplicated(dd),]
-data <- read_xlsx("Crown measurement dataset Kem Kem theropods.xlsx")
 
+data <- read_xlsx("Crown measurement dataset Kem Kem theropods.xlsx")
+data<-data[data$`Taxa (Genus)`!="Abelisauridae",]
 data[data == "?"] <- NA
 data[data == "~"] <- NA
 data[data == "/"] <- NA
@@ -126,9 +107,7 @@ data$CH<-data$CH...22
 data<- data %>% select(-CH...60,-CH...22,-`(DDL/CH)*100`)
 data1<-data
 data<-data[,-c(1,2,5,4,6:14,16:19)]#until 19
-#clade: 4, taxa:2, teethtaxa: 3, cladetteth: 5, epoch:15
-#data<-inner_join(dd,data)
-#data<-data[!duplicated(data),]
+
 
 data$`TransvUndu`<-ifelse(data$`Transv. Undu.`!=0 & !is.na(data$`Transv. Undu.`),1,data$`Transv. Undu.`)
 
@@ -146,19 +125,11 @@ data <- data %>%
   mutate(across(3:ncol(data), log, .names = "Log_{.col}"))
 
 data$TaxonToothtype<-as.factor(data$TaxonToothtype)
-data$Epoch<-ifelse(data$Epoch=="'Middle Cretaceous'","Middle Cretaceous", data$Epoch)
-data$Epoch<-as.factor(data$Epoch)
+#data$Epoch<-ifelse(data$Epoch=="'Middle Cretaceous'","Middle Cretaceous", data$Epoch)
+#data$Epoch<-as.factor(data$Epoch)
 
-# Columns to be checked
-#columns_to_check <- c("MA", "MC", "MB", "DA", "DC", "DB", "MAVG", "DAVG", "DSDI")
 
-# Replace values equal to 100 with 0 in the specified columns
-#data[columns_to_check] <- lapply(data[columns_to_check], function(x) {
- # x[x == 100] <- 0
-  #return(x)
-#})
 
-#data$Taxa<-as.factor(paste0(data$`Taxa (Genus)`,data$Maturity,sep=" "))
 data<-data.frame(data)
 
 
@@ -352,8 +323,8 @@ data1 <- data1 %>%
   mutate(across(3:ncol(data1), log, .names = "Log_{.col}"))
 
 data1$TaxonToothtype<-as.factor(data1$TaxonToothtype)
-data1$Epoch<-ifelse(data1$Epoch=="'Middle Cretaceous'","Middle Cretaceous", data1$Epoch)
-data1$Epoch<-as.factor(data1$Epoch)
+#data1$Epoch<-ifelse(data1$Epoch=="'Middle Cretaceous'","Middle Cretaceous", data1$Epoch)
+#data1$Epoch<-as.factor(data1$Epoch)
 
 
 #data$Taxa<-as.factor(paste0(data$`Taxa (Genus)`,data$Maturity,sep=" "))
@@ -436,5 +407,3 @@ write.csv(data_log,"teeth_data_log_taxa_epoch1.csv", row.names = FALSE)
 write.csv(data_original,"teeth_data_taxa_epoch1.csv", row.names = FALSE)
 ```
 
-
-# References
