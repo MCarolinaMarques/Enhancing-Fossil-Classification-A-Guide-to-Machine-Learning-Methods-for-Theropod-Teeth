@@ -35,8 +35,6 @@ import numpy as np
 # Load the data
 data = pd.read_csv('teeth_data_clade_epoch1.csv')
 
-#data = pd.get_dummies(data, columns=['Epoch'], drop_first=False)
-
 
 # Mapping the epochs to their label encodings
 epoch_mapping = {
@@ -56,6 +54,7 @@ data['Epoch'] = data['Epoch'].map(epoch_mapping)
 
 # Separate features and target
 X = data.drop(columns='CladeToothtype')
+X = X.drop(columns='Epoch')
 y = data['CladeToothtype']
 
 
@@ -80,8 +79,8 @@ sns.barplot(x=class_counts.index, y=class_counts.values, palette='viridis')
 plt.title('Number of Observations for Each Class', fontsize=20)
 plt.xlabel('Class', fontsize=19)
 plt.ylabel('Number of Observations', fontsize=19)
-# Rotate class names and make them italic
-plt.xticks(rotation=90, fontstyle='italic')
+# Rotate class names 
+plt.xticks(rotation=90)
 plt.tight_layout()
 # Show the plot
 plt.show()
@@ -93,7 +92,6 @@ numeric_columns = ["CBL","CBW","CH","CBR","CHR","DC","DDL"]
 #Model methods
 methods=[
     ('Random Forest',RandomForestClassifier(n_estimators=100, random_state=42)),
-  #  ('Neural Network',nn_model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])),
     ('Support Vector Machine',SVC(kernel='rbf', probability=True, random_state=42)),
     ('K-Nearest Neighbors',KNeighborsClassifier(n_neighbors=5)),
     ('Gradient Boosting',GradientBoostingClassifier(n_estimators=100, random_state=42)),
@@ -113,9 +111,7 @@ oversamplers = [
     ('NoOversampling', None),
     ('SMOTE', SMOTE(random_state=42, k_neighbors=4)),
     ('RandomOverSampler', RandomOverSampler(sampling_strategy='auto',random_state=42)),
-  #  ('ADASYN', ADASYN(random_state=42, k_neighbors=5)),
     ('BorderlineSMOTE', BorderlineSMOTE(random_state=42, k_neighbors=4)),
-   # ('SVMSMOTE', SVMSMOTE(random_state=42, k_neighbors=4)),
     ('KMeansSMOTE', KMeansSMOTE(random_state=42,cluster_balance_threshold=0.01))
 ]
 # Initialize a deque to keep track of the top 3 models (with maxlen 3)
@@ -477,8 +473,8 @@ for k, (method_name, method) in enumerate(methods):
        #     plt.title(f'{method_name}+ {scaler_name} + {sampler_name} (Mean)')
             plt.xlabel('Predicted class', fontsize=22)
             plt.ylabel('True class', fontsize=22)
-            plt.xticks(rotation=90, fontstyle='italic')
-            plt.yticks(fontstyle='italic')
+            plt.xticks(rotation=90)
+
             # Adjust layout and show the plot
             plt.tight_layout()
             filename = f"5Plotsnew_clade/mean_{method_name}_{scaler_name}_{sampler_name}_cm.png"
@@ -496,8 +492,7 @@ for k, (method_name, method) in enumerate(methods):
            # plt.title(f'{method_name}+{scaler_name} + {sampler_name} (Std Dev)')
             plt.xlabel('Predicted class', fontsize=22)
             plt.ylabel('True class', fontsize=22)
-            plt.xticks(rotation=90, fontstyle='italic')
-            plt.yticks(fontstyle='italic')
+            plt.xticks(rotation=90)
             
             # Adjust layout and show the plot
             plt.tight_layout()
@@ -533,8 +528,7 @@ for k, (method_name, method) in enumerate(methods):
        #     plt.title(f'{method_name}+ {scaler_name} + {sampler_name} (Mean)')
             plt.xlabel('Predicted class', fontsize=22)
             plt.ylabel('True class', fontsize=22)
-            plt.xticks(rotation=90, fontstyle='italic')
-            plt.yticks(fontstyle='italic')
+            plt.xticks(rotation=90)
                         
             # Adjust layout and show the plot
             plt.tight_layout()
@@ -553,8 +547,7 @@ for k, (method_name, method) in enumerate(methods):
            # plt.title(f'{method_name}+{scaler_name} + {sampler_name} (Std Dev)')
             plt.xlabel('Predicted class', fontsize=22)
             plt.ylabel('True class', fontsize=22)
-            plt.xticks(rotation=90, fontstyle='italic')
-            plt.yticks(fontstyle='italic')
+            plt.xticks(rotation=90)
             
             # Adjust layout and show the plot
             plt.tight_layout()
@@ -968,8 +961,7 @@ for k, (method_name, method) in enumerate(methods):
        #     plt.title(f'{method_name}+ {scaler_name} + {sampler_name} (Mean)')
             plt.xlabel('Predicted class', fontsize=22)
             plt.ylabel('True class', fontsize=22)
-            plt.xticks(rotation=90, fontstyle='italic')
-            plt.yticks(fontstyle='italic')
+            plt.xticks(rotation=90)
                         
             # Adjust layout and show the plot
             plt.tight_layout()
@@ -988,8 +980,7 @@ for k, (method_name, method) in enumerate(methods):
            # plt.title(f'{method_name}+{scaler_name} + {sampler_name} (Std Dev)')
             plt.xlabel('Predicted class', fontsize=22)
             plt.ylabel('True class', fontsize=22)
-            plt.xticks(rotation=90, fontstyle='italic')
-            plt.yticks(fontstyle='italic')
+            plt.xticks(rotation=90)
             
             # Adjust layout and show the plot
             plt.tight_layout()
@@ -1026,8 +1017,7 @@ for k, (method_name, method) in enumerate(methods):
        #     plt.title(f'{method_name}+ {scaler_name} + {sampler_name} (Mean)')
             plt.xlabel('Predicted class', fontsize=22)
             plt.ylabel('True class', fontsize=22)
-            plt.xticks(rotation=90, fontstyle='italic')
-            plt.yticks(fontstyle='italic')
+            plt.xticks(rotation=90)
                         
             # Adjust layout and show the plot
             plt.tight_layout()
@@ -1046,8 +1036,7 @@ for k, (method_name, method) in enumerate(methods):
            # plt.title(f'{method_name}+{scaler_name} + {sampler_name} (Std Dev)')
             plt.xlabel('Predicted class', fontsize=22)
             plt.ylabel('True class', fontsize=22)
-            plt.xticks(rotation=90, fontstyle='italic')
-            plt.yticks(fontstyle='italic')
+            plt.xticks(rotation=90)
             
             # Adjust layout and show the plot
             plt.tight_layout()

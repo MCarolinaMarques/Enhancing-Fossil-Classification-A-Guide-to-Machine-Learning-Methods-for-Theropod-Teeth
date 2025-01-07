@@ -38,8 +38,6 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticD
 data = pd.read_csv('teeth_data_log_clade_epoch1.csv')
 
 
-#data = pd.get_dummies(data, columns=['Epoch'], drop_first=False)
-
 
 # Mapping the epochs to their label encodings
 epoch_mapping = {
@@ -58,6 +56,9 @@ data['Epoch'] = data['Epoch'].map(epoch_mapping)
 
 # Separate features and target
 X = data.drop(columns='CladeToothtype')
+
+X = X.drop(columns='Epoch')
+
 y = data['CladeToothtype']
 
 
