@@ -1,0 +1,33 @@
+---
+title: "New isolated theropod teeth"
+author: "Carolina Marques"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: hide
+    fig_caption: yes
+    force_captions: yes
+    highlight: pygments
+    number_sections: yes
+    theme: cerulean
+    df_print: paged
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+bibliography: biblio.bib  
+link-citations: true
+---
+
+```{r}
+library(readxl)
+library(dplyr)
+data <- read_xlsx("New_theropod_teeth.xlsx")#reading data
+data<-data[,c(1:15)]
+# Convert columns to numeric, then create log-transformed columns
+data <- data %>%
+  mutate(across(9:ncol(data), as.numeric)) %>%
+  mutate(across(9:ncol(data), log, .names = "Log_{.col}"))
+
+write.csv(data,"new_theropod_teeth_data.csv", row.names = FALSE)
+
+```
