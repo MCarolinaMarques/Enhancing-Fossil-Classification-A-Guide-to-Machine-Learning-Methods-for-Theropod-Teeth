@@ -51,6 +51,7 @@ data['Epoch'] = data['Epoch'].map(epoch_mapping)
 
 # Separate features and target
 X = data.drop(columns='TaxonToothtype')
+X = X.drop(columns='Epoch')
 y = data['TaxonToothtype']
 
 
