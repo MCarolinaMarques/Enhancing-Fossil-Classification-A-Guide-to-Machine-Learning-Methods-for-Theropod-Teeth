@@ -15,78 +15,59 @@ X= pd.read_excel('C:/path/to/your/folder/.../filedata.xlsx')
 
 ### 3- Select the variables needed:
 
-X=X[["Epoch","CBL", "CBW", "CH", "CBR", "CHR", "DC", "DDL"]]
+X=X[["CBL", "CBW", "CH", "CBR", "CHR", "DC", "DDL"]]
 
 ### 4-  Open the trained standadization method:
 
-sc=joblib.load('CC:/path/to/your/folder/.../scaler_Random Forest_QuantileTransformer_KMeansSMOTE.joblib')
+sc=joblib.load('CC:/path/to/your/folder/.../scaler_Random Forest_QuantileTransformer_RandomOverSampler.joblib')
 
 ### 5- Load the trained model:
 
-model=joblib.load('C:/path/to/your/folder/.../model_Random Forest_QuantileTransformer_KMeansSMOTE.joblib')
+model=joblib.load('C:/path/to/your/folder/.../model_Random Forest_QuantileTransformer_RandomOverSampler.joblib')
 
-
-### 6- Mapping the epochs to their label encodings:
-
-epoch_mapping = {
-    "Late Triassic": 0,
-    "Early Jurassic": 1,
-    "Middle Jurassic":2,
-    "Late Jurassic": 3,
-    "Late Jurassic - Early Cretaceous": 3.5,
-    "Early Cretaceous": 4,
-    "Middle Cretaceous": 5,
-    "Late Cretaceous":6
-}
-
-### 7- Apply the mapping to the 'Epoch' column:
-
-X['Epoch'] = X['Epoch'].map(epoch_mapping)
-
-
-### 8- Select the numeric columns to be standardized:
+### 6- Select the numeric columns to be standardized:
 
 numeric_columns = ["CBL", "CBW", "CH", "CBR", "CHR", "DC", "DDL"]
 
 
-### 9- Re-order the columns to mach the order used in training:
+### 7- Re-order the columns to mach the order used in training:
 
-X=X.reindex(["Epoch","CBL", "CBW", "CH", "CBR", "CHR", "DC", "DDL"], axis=1)
+X = X[model.feature_names_in_]
 
 X1=X
 
 
-### 10- Standardize the numeric columns:
+### 8- Standardize the numeric columns:
 
 X[numeric_columns] = sc.transform(X[numeric_columns])
 
 
-### 11- Transform the data to a DataFrame
+### 9- Transform the data to a DataFrame
 
 X = pd.DataFrame(X, columns=X1.columns)
 
 
-### 12- Predict the classification probabilities for the new data:
+### 10- Predict the classification probabilities for the new data:
 
 predictions = model.predict(X)
 
 
-### 13- Printing predictions:
+### 11- Printing predictions:
 
 print(f'{predictions}')
 
 
-### 14- Get the predicted class probabilities
+### 12- Get the predicted class probabilities
 
 predictions_proba = model.predict_proba(X)
 
 
-### 15- Convert the results to a DataFrame for better readability:
+### 13- Convert the results to a DataFrame for better readability:
 
 predictions_df = pd.DataFrame(predictions_proba, columns=model.classes_)
 
 
-### 16- Create a function to get the top 3 classes with the highest probabilities:
+### 14- Create a function to get the top 3 classes with the highest probabilities:
 
 def get_top_n_classes(row, n=3):
     sorted_indices = row.values.argsort()[::-1][:n]  # Get the indices of the top n probabilities
@@ -99,11 +80,11 @@ def get_top_n_classes(row, n=3):
     return pd.Series(result)
 
 
-### 17-  Apply the function to each row/ teeth:
+### 15-  Apply the function to each row/ teeth:
 
 top_predictions_df = predictions_df.apply(get_top_n_classes, axis=1)
 
 
-### 18- Print the results:
+### 16- Print the results:
 
 print(top_predictions_df)
