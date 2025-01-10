@@ -15,7 +15,7 @@ y = data['TaxonToothtype']
 
 X=data[["CBL", "CBW","CH", "CBR", "CHR","DC", "DDL" ]]
 
-rf_model=joblib.load('C:/Users/carol/Dropbox/PhD_Paleo_stuff/Dentes/5ModelResultsnew_ne/model_Random Forest_StandardScaler_KMeansSMOTE.joblib')
+rf_model=joblib.load('C:/Users/carol/Dropbox/PhD_Paleo_stuff/Dentes/5ModelResultsnew_ne/model_Random Forest_StandardScaler_RandomOverSampler.joblib')
 
 
 # Visualize the first tree in the Random Forest
