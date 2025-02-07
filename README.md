@@ -1,5 +1,5 @@
 # Enhancing-Fossil-Classification-A-Guide-to-Machine-Learning-Methods-for-Theropod-Teeth
-Here you can find all of the information on the article "Enhancing Fossil Classification: A Guide to Machine Learning Methods for Theropod Teeth". Including the newest version of the article (PDF), the figures included, the code that creates them and the pre-processing done in R and the analysis done in Python.
+Here you can find all of the information on the article "Enhancing Fossil Classification: A Guide to Machine Learning Methods for Theropod Teeth". Including the code that creates the figures and the pre-processing done in R and the analysis done in Python.
 
 ## To apply the trained models to classify new theropod teeth follow the following steps:
 
